@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pa
-#import keras as kr
-#import tensorflow as ts
 from sklearn.model_selection import train_test_split 
 # calunalmos la canitdad de datos que nos proporcionan
 tam=0
@@ -36,6 +34,30 @@ for i in array:
    etiquetas[indice]=array[indice][13]
    indice=indice+1
 # ya estan los datos en los dos arrays ahora se les separa en los conjuntos
-xtrain,xtest,ytrain,ytest=train_test_split(datos,etiquetas)
+x_train,x_test,y_train,y_test=train_test_split(datos,etiquetas)
 # ahora debemos de hacer la red neuronal
 # para ello utlizaremos alguna libreria que nos ayude con el proceso
+#
+
+from sklearn import linear_model
+algoritmo= linear_model.LinearRegression()
+algoritmo.fit(x_train, y_train)
+result=algoritmo.predict(x_test)
+
+
+tasaFallo=0
+for i in range(34):
+    r= result[i]
+    v=y_test[i]
+    print('Resultado '+str(result[i])+' Valor real '+str(y_test[i]))
+    if r>v:
+        val=r-v
+    else:
+        val=v-r
+    tasaFallo=tasaFallo+val
+print(tasaFallo/34)
+
+print(algoritmo.score(x_train,y_train))
+
+print(algoritmo.coef_)
+print(algoritmo.intercept_)
